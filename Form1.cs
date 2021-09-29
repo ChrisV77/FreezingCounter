@@ -31,7 +31,7 @@ namespace FreezingCounter
             last_keyCode = Keys.P;          // initialise as letter 'P', not used so safe
             freezeCountRunning = false;
             duringFreezingEpoch = false;
-            labelInstructions.Text = "Keys: S=start E=end <spacebar>=while freezing";
+            labelInstructions.Text = "Keyboard, press:\nS=start\nE=end\n<spacebar>=while freezing";
         }
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
