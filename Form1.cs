@@ -31,33 +31,34 @@ namespace FreezingCounter
             last_keyCode = Keys.P;          // initialise as letter 'P', not used so safe
             freezeCountRunning = false;
             duringFreezingEpoch = false;
+            labelInstructions.Text = "Keys: S=start E=end <spacebar>=while freezing";
         }
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
             // get the keyboard input
             current_keyCode = e.KeyCode;
-            labelKeyInput.Text = current_keyCode.ToString();
 
             // keystroke "S": start freeze counting
             if (current_keyCode == Keys.S && !freezeCountRunning && last_keyCode != Keys.S)
             {
                 startMeasureTime = DateTime.Now;
                 measureDuration = 0;
-                labelStartStop.Text = "started freezing measurement";
-                labelMeasureDuration.Text = measureDuration.ToString();
+                labelStartStop.Text = String.Format("Started {0:hh:mm:ss}", startMeasureTime);
+                labelMeasureDuration.Text = String.Format(" {0:F2}", measureDuration);
                 freezeCountRunning = true;
                 freezeDuration = 0;         // reset freeze total time
-                labelFreezingDuration.Text = freezeDuration.ToString();
+                labelFreezingDuration.Text = String.Format("{0:F2}", freezeDuration);
             }
 
             // keystroke "E": end freeze counting
             if (current_keyCode == Keys.E && freezeCountRunning && last_keyCode != Keys.E)
             {
                 endMeasureTime = DateTime.Now;
-                labelStartStop.Text = "ended, duration (sec) = ";
+                labelStartStop.Text = String.Format("Started {0:hh:mm:ss}", endMeasureTime);
                 measureDuration = (endMeasureTime - startMeasureTime).TotalSeconds;
-                labelTotalFreezing.Text = (100 * freezeDuration / measureDuration).ToString();
+                labelMeasureDuration.Text = String.Format("{0:F2}", measureDuration);
+                labelTotalFreezing.Text = String.Format("{0:F1}", (100 * freezeDuration / measureDuration));
                 freezeCountRunning = false;
 
             }
@@ -66,7 +67,6 @@ namespace FreezingCounter
             if (e.KeyCode == Keys.Space && freezeCountRunning && !duringFreezingEpoch)
             {
                 freezeStart = DateTime.Now;
-                labelFreezingDuration.Text = freezeDuration.ToString();
                 duringFreezingEpoch = true;
             }
 
@@ -82,7 +82,8 @@ namespace FreezingCounter
                 freezeEpoch = freezeEnd - freezeStart;
                 freezeDuration += freezeEpoch.TotalSeconds;
                 labelFreezingDuration.Text = freezeDuration.ToString();
-                labelMeasureDuration.Text = (freezeEnd - startMeasureTime).TotalSeconds.ToString();
+                labelFreezingDuration.Text = String.Format("{0:F2}", freezeDuration);
+                labelMeasureDuration.Text = String.Format("{0:F2}", (freezeEnd - startMeasureTime).TotalSeconds);
                 duringFreezingEpoch = false;
 
             }
