@@ -14,10 +14,13 @@ namespace FreezingCounter
     {
         DateTime startMeasureTime;
         DateTime endMeasureTime;
+        double measureDuration;
         DateTime freezeStart;
         DateTime freezeEnd;
-        int freezeDuration;
-        bool FreezeCountRunning;
+        TimeSpan freezeEpoch;
+        double freezeDuration;
+        bool freezeCountRunning;
+        bool duringFreezingEpoch;
 
         Keys current_keyCode;
         Keys last_keyCode;
@@ -26,7 +29,8 @@ namespace FreezingCounter
         {
             InitializeComponent();
             last_keyCode = Keys.P;          // initialise as letter 'P', not used so safe
-            FreezeCountRunning = false;
+            freezeCountRunning = false;
+            duringFreezingEpoch = false;
         }
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
@@ -36,30 +40,34 @@ namespace FreezingCounter
             labelKeyInput.Text = current_keyCode.ToString();
 
             // keystroke "S": start freeze counting
-            if (current_keyCode == Keys.S && !FreezeCountRunning && last_keyCode != Keys.S)
+            if (current_keyCode == Keys.S && !freezeCountRunning && last_keyCode != Keys.S)
             {
                 startMeasureTime = DateTime.Now;
+                measureDuration = 0;
                 labelStartStop.Text = "started freezing measurement";
-                FreezeCountRunning = true;
+                labelMeasureDuration.Text = measureDuration.ToString();
+                freezeCountRunning = true;
+                freezeDuration = 0;         // reset freeze total time
+                labelFreezingDuration.Text = freezeDuration.ToString();
             }
 
             // keystroke "E": end freeze counting
-            if (current_keyCode == Keys.E && FreezeCountRunning && last_keyCode != Keys.E)
+            if (current_keyCode == Keys.E && freezeCountRunning && last_keyCode != Keys.E)
             {
                 endMeasureTime = DateTime.Now;
                 labelStartStop.Text = "ended, duration (sec) = ";
-                int testDuration = (endMeasureTime - startMeasureTime).Milliseconds;
-                labelStartStop.Text += testDuration.ToString();
-                labelStartStop.Text += " msec";
-                FreezeCountRunning = false;
+                measureDuration = (endMeasureTime - startMeasureTime).TotalSeconds;
+                labelTotalFreezing.Text = (100 * freezeDuration / measureDuration).ToString();
+                freezeCountRunning = false;
 
-                labelTotalFreezing.Text = (100 * freezeDuration / testDuration).ToString();
             }
 
             // keystroke "spacebar": freezing
-            if (e.KeyCode == Keys.Space && FreezeCountRunning)
+            if (e.KeyCode == Keys.Space && freezeCountRunning && !duringFreezingEpoch)
             {
                 freezeStart = DateTime.Now;
+                labelFreezingDuration.Text = freezeDuration.ToString();
+                duringFreezingEpoch = true;
             }
 
             // keep the last keyStroke
@@ -68,11 +76,15 @@ namespace FreezingCounter
 
         private void Form1_KeyUp(object sender, KeyEventArgs e)
         {
-            if (last_keyCode == Keys.Space && FreezeCountRunning)
+            if (last_keyCode == Keys.Space && freezeCountRunning && duringFreezingEpoch)
             {
                 freezeEnd = DateTime.Now;
-                freezeDuration = (freezeEnd - freezeStart).Milliseconds;
-                labelFreezing.Text = freezeDuration.ToString();
+                freezeEpoch = freezeEnd - freezeStart;
+                freezeDuration += freezeEpoch.TotalSeconds;
+                labelFreezingDuration.Text = freezeDuration.ToString();
+                labelMeasureDuration.Text = (freezeEnd - startMeasureTime).TotalSeconds.ToString();
+                duringFreezingEpoch = false;
+
             }
         }
 
