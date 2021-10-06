@@ -112,12 +112,12 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(82, 210);
+            this.label1.Location = new System.Drawing.Point(38, 210);
             this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(116, 24);
+            this.label1.Size = new System.Drawing.Size(160, 24);
             this.label1.TabIndex = 9;
-            this.label1.Text = "Time (sec):";
+            this.label1.Text = "Total time (sec):";
             this.label1.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // labelMeasureDuration
@@ -145,7 +145,7 @@
             this.Controls.Add(this.labelFreezingDuration);
             this.Controls.Add(this.labelStartStop);
             this.Controls.Add(this.labelInstructions);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Form1";
             this.Text = "Freezing Counter";
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);

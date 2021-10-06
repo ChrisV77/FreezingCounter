@@ -40,7 +40,7 @@ namespace FreezingCounter
             current_keyCode = e.KeyCode;
 
             // keystroke "S": start freeze counting
-            if (current_keyCode == Keys.S && !freezeCountRunning && last_keyCode != Keys.S)
+            if (current_keyCode == Keys.S && !freezeCountRunning)
             {
                 startMeasureTime = DateTime.Now;
                 measureDuration = 0;
@@ -52,7 +52,7 @@ namespace FreezingCounter
             }
 
             // keystroke "E": end freeze counting
-            if (current_keyCode == Keys.E && freezeCountRunning && last_keyCode != Keys.E)
+            if (current_keyCode == Keys.E && freezeCountRunning)
             {
                 endMeasureTime = DateTime.Now;
                 labelStartStop.Text = String.Format("Started {0:hh:mm:ss}", endMeasureTime);
