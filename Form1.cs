@@ -14,7 +14,7 @@ namespace FreezingCounter
     {
         DateTime startMeasureTime;
         DateTime endMeasureTime;
-        double measureDuration;
+        double measureDuration; 
         DateTime freezeStart;
         DateTime freezeEnd;
         TimeSpan freezeEpoch;
